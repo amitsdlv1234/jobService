@@ -19,6 +19,12 @@ public class JobController {
     @Autowired
     private JobServiceLinkedin jobService;
 
+    // Redirect /jobs to default source
+    @GetMapping
+    public String redirectToDefaultSource() {
+        return "redirect:/jobs/linkedin";
+    }
+
     // Home page: show job sources
     @GetMapping("/")
     public String home(Model model) {
