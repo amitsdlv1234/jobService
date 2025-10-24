@@ -13,14 +13,15 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the Spring Boot app using lightweight Java 21
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:21-jdk-slim
 WORKDIR /app
 
 # Copy JAR from build stage
 COPY --from=build /app/target/service-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port Render will use
+# Expose the port Render will use (use dynamic PORT)
+ENV PORT 8080
 EXPOSE 8080
 
 # Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=${PORT}"]
