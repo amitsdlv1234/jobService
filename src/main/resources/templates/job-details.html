@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${job.title}">Job Details</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        h1 { text-align: center; margin-bottom: 20px; color: #0073b1; }
+        .job-info {
+            max-width: 700px; margin: auto; border: 1px solid #ddd; border-radius: 10px;
+            padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .job-info p { margin: 10px 0; font-size: 16px; }
+        .back-btn { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #0073b1; font-weight: bold; }
+        .apply-btn {
+            display: inline-block; margin-top: 15px; padding: 10px 20px;
+            background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;
+            font-weight: bold; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<a th:href="@{'/jobs/' + ${job.source}}" class="back-btn">&larr; Back to Jobs</a>
+
+<div class="job-info">
+    <h1 th:text="${job.title}">Job Title</h1>
+    <p><strong>Company:</strong> <span th:text="${job.organization}">Company Name</span></p>
+    <p><strong>Location:</strong> <span th:text="${job.location}">Location</span></p>
+    <p><strong>Employment Type:</strong> <span th:text="${job.employmentType}">Type</span></p>
+    <p><strong>Seniority:</strong> <span th:text="${job.seniority}">Level</span></p>
+    <p><strong>Industry:</strong> <span th:text="${job.linkedinOrgIndustry}">Industry</span></p>
+    <p><strong>Followers:</strong> <span th:text="${job.linkedinOrgFollowers}">Followers</span></p>
+    <p><strong>Description:</strong> <span th:text="${job.descriptionText}">Description</span></p>
+
+    <a th:if="${job.directApply}" th:href="${job.url}" target="_blank" class="apply-btn">
+        Apply Now
+    </a>
+    <a th:unless="${job.directApply}" th:href="${job.url}" class="apply-btn">
+        View on LinkedIn
+    </a>
+</div>
+
+</body>
+</html>
