@@ -5,7 +5,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy the JAR built by Maven/Gradle
-COPY target/service-0.0.1-SNAPSHOT.jar app.jar
+COPY target/service-0.0.1-SNAPSHOT.jar
 
 # Expose the port your Spring Boot app runs on
 EXPOSE 8080
