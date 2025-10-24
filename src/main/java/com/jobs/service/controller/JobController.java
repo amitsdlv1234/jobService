@@ -18,7 +18,7 @@ public class JobController {
     @Autowired
     private JobServiceLinkedin jobService;
 
-    // Home page: show job sources
+    // ---------------- Home Page ----------------
     @GetMapping("/")
     public String home(Model model) {
         List<Map<String, String>> sources = List.of(
@@ -32,8 +32,8 @@ public class JobController {
         return "home";
     }
 
-    // Job list page: fetch jobs filtered by source using RESTful path
-    @GetMapping("/{source}")
+    // ---------------- Job List Page ----------------
+    @GetMapping("/jobs/{source}")
     public String listJobs(@PathVariable String source, Model model) {
         List<Job> allJobs = jobService.searchJobs();
         List<Job> jobs = allJobs.stream()
@@ -45,8 +45,8 @@ public class JobController {
         return "jobs";
     }
 
-    // Job details page: fetch job by ID using RESTful path
-    @GetMapping("/{source}/{id}")
+    // ---------------- Job Details Page ----------------
+    @GetMapping("/jobs/{source}/{id}")
     public String jobDetails(@PathVariable String source, @PathVariable String id, Model model) {
         List<Job> allJobs = jobService.searchJobs();
         Job selectedJob = allJobs.stream()
@@ -62,8 +62,21 @@ public class JobController {
         return "job-details";
     }
 
-    // --------- JSON API Endpoints ---------
+    // ---------------- Local Apply Page ----------------
+    @GetMapping("/apply/{id}")
+    public String applyJob(@PathVariable String id, Model model) {
+        Job job = jobService.searchJobs().stream()
+                .filter(j -> j.getId().equals(id))
+                .findFirst()
+                .orElse(null);
 
+        if (job == null) return "redirect:/";  // fallback if job not found
+
+        model.addAttribute("job", job);
+        return "apply-form"; // create a Thymeleaf template apply-form.html for local apply
+    }
+
+    // ---------------- JSON API Endpoints ----------------
     @GetMapping(value = "/api/all", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<Job> apiGetAllJobs() {
